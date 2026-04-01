@@ -1,24 +1,33 @@
-import { checkEnvironment } from "./utils";
-import OpenAi from "openai"
+import { checkEnvironment } from "./utils.js"
+import OpenAI from "openai"
 
-checkEnvironment()
-
-const openai = new OpenAi({
-    apiKey: process.env.AI_KEY,
-    apiUrl: process.env.AI_URL,
-    dangerouslyAllowBrowser: true
+// Initialize the OpenAI client using environment variables
+const openai = new OpenAI({
+  apiKey: process.env.AI_KEY,
+  baseURL: process.env.AI_URL,
+  dangerouslyAllowBrowser: true
 })
 
-const userPrompt = ""
+checkEnvironment();
 
-const userMessage = {
+const messages = [ 
+  {
+    role: "system",
+    content: `Make these suggestions thoughtful and practical. 
+    Your response must be under 100 words. 
+    Skip intros and conclusions. 
+    Only output gift suggestions.`
+  },
+  {
     role: "user",
-    content: userPrompt
-}
+    content: `Suggest some gifts for someone who loves hiphop music.`
+  }
+]
 
 const response = await openai.chat.completions.create({
-    model: process.env.AI_MODEL,
-    messages: [ userMessage ]
+  model: process.env.AI_MODEL,
+  messages
 })
 
-console.log(response)
+// Extract the model's generated text from the response
+console.log(response.choices[0].message.content)
