@@ -1,3 +1,6 @@
+NOTE: This is a feature with web search and doesn't have a backend integration. It was removed 
+on the original code as the feature consumes a lot liek really huge amount of tokens. 
+
 import OpenAI from "openai";
 import { marked } from "marked";
 import DOMPurify from "dompurify";

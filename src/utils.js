@@ -27,8 +27,8 @@ export function autoResizeTextarea(textarea) {
 
 /**
  * Toggle loading state for the request lifecycle.
- * When entering: hides output, resets textarea, animates lamp.
- * When exiting: shows output, restores lamp to compact state.
+ * When entering loading state: resets textarea, hides output, animates lamp.
+ * When exiting: restores lamp to compact state.
  */
 export function setLoading(isLoading) {
   const lampButton = document.getElementById("lamp-button");
@@ -39,21 +39,19 @@ export function setLoading(isLoading) {
   lampButton.disabled = isLoading;
 
   if (isLoading) {
-    // Hide output and reset textarea
+    // Reset textarea and hide previous output
+    userInput.style.height = "auto";
     outputContainer.classList.add("hidden");
     outputContainer.classList.remove("visible");
-    userInput.style.height = "auto";
 
     // Animate lamp
     lampButton.classList.remove("compact");
     lampButton.classList.add("loading");
     lampText.textContent = "Summoning Gift Ideas...";
   } else {
-    // Show output
+    // Restore lamp to compact state
     outputContainer.classList.remove("hidden");
     outputContainer.classList.add("visible");
-
-    // Restore lamp to compact state
     lampButton.classList.remove("loading");
     lampButton.classList.add("compact");
     lampText.textContent = "Rub the Lamp";
