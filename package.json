@@ -12,6 +12,8 @@
     "vite": "^8.0.1"
   },
   "dependencies": {
+    "dompurify": "^3.3.3",
+    "dotenv": "^17.4.0",
     "express": "^5.2.1",
     "marked": "^17.0.5",
     "openai": "^6.33.0"

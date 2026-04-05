@@ -1,0 +1,51 @@
+Gift Genie - Why you see "Cannot GET /" and how to fix it
+
+What is happening
+- Your server currently exposes only one API route: POST /api/gift.
+- There is no active route for GET /, and no active static file serving middleware.
+- In server.js, the lines that would serve index.html/static files are commented out.
+- So when the browser requests /, Express returns its default 404 message: Cannot GET /.
+
+How to confirm quickly
+1) Start the backend and open /api/gift in the browser.
+   - You should not get the same page load behavior as index.html because this endpoint expects POST.
+2) Check server.js and find:
+   - app.post("/api/gift", ...)
+   - no active app.get("/")
+   - no active express.static(...)
+
+Pick one architecture (recommended to choose only one)
+
+Option A: Keep Vite as frontend server (best for development)
+- Run frontend and backend separately:
+  - Frontend from Vite dev server (usually localhost:5173)
+  - Backend from Express (localhost:3001)
+- Add a Vite proxy so frontend calls to /api go to the Express server.
+- Keep fetch("/api/gift") in the browser code.
+- In this setup, you open the Vite URL in browser, not the Express URL.
+
+Option B: Serve frontend from Express
+- Enable static serving in server.js.
+- Add a route for GET / that returns your HTML entry file.
+- Make sure the path points to the real location of your HTML/CSS/JS files.
+- In this setup, opening the Express URL should render your page.
+
+Important note for your current structure
+- Your index.html is in src/index.html.
+- If you serve files from Express, verify your static root and HTML file path match this location.
+- A wrong directory path will still produce 404 or missing assets.
+
+Suggested implementation order
+1) Decide Option A or Option B.
+2) Wire routing/static serving for that option.
+3) Start server(s).
+4) Open the correct URL for your chosen option.
+5) Verify:
+   - page renders
+   - submitting form hits POST /api/gift
+   - response shows in output area
+
+If you want a quick self-check after coding
+- Browser at / should load UI.
+- Network tab should show POST /api/gift with 200 status.
+- No 404 for JS/CSS assets.
